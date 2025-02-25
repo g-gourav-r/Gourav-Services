@@ -16,27 +16,29 @@ const Hero = () => {
   const globeRef = useRef(null);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+
     // GSAP Animations
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
     // Heading Animation - Slide in from left
     tl.fromTo(
       headingRef.current,
-      { x: -100, opacity: 0 },
+      { x: -50, opacity: 0 },
       { x: 0, opacity: 1, duration: 1 }
     )
       // Paragraph Animation - Fade up
       .fromTo(
         paragraphRef.current,
-        { y: 50, opacity: 0 },
+        { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.5"
       )
       // Globe Animation - Scale and fade in
       .fromTo(
         globeRef.current,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.5 },
+        { scale: isMobile ? 1 : 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.5, ease: "power2.out" },
         "-=1"
       );
   }, []);
@@ -66,10 +68,10 @@ const Hero = () => {
       </div>
 
       {/* Right Side: Globe Section */}
-      <div className="w-full h-full md:w-1/2 p-4 relative overflow-hidden">
+      <div className="w-full h-full md:w-1/2 p-4 relative overflow-hidden flex items-center justify-center">
         <div
           ref={globeRef}
-          className="absolute inset-0 m-auto flex items-center justify-center w-full h-full"
+          className="w-full h-full flex items-center justify-center"
         >
           <World data={sampleArcs} globeConfig={globeConfig} />
         </div>
