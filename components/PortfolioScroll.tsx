@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Marquee from "react-fast-marquee";
@@ -13,7 +13,7 @@ export default function PortfolioScroll() {
   // Refs for the animated container and the outer scroll container
   const containerRef = useRef<HTMLDivElement>(null);
   const outerRef = useRef<HTMLDivElement>(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(true);
 
   // Array of project names to display
   const projects = [
@@ -23,6 +23,9 @@ export default function PortfolioScroll() {
   ];
 
   useEffect(() => {
+    // This will only run on the client
+    setIsMobile(window.innerWidth < 768);
+
     if (!isMobile && containerRef.current && outerRef.current) {
       // Calculate the horizontal scroll distance.
       // For 3 slides, we want to move by (3-1) * 100vw = 200vw.
@@ -33,7 +36,7 @@ export default function PortfolioScroll() {
         ease: "none",
         scrollTrigger: {
           trigger: outerRef.current,
-          start: "top 70",
+          start: "top top",
           // The end is dynamically set based on the computed scroll distance.
           end: `+=${scrollDistance}`,
           scrub: 2,
